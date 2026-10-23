@@ -12,11 +12,7 @@ class HomeController{
     function index() {
     $user = new User;
     try {
-        $res = $user->create([
-            'name' => 'Carlitos',
-            'email' => 'carlitos@gmail.com',
-            'password' => '1234',
-        ]);
+        $res = $user->create("Carlitos", "1234");
     } catch (PDOException $e) {
         die($e->getMessage());
     }

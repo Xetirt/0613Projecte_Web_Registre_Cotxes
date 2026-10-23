@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Models\Comment;
@@ -21,5 +22,6 @@ class CommentController extends Controller {
         }
 
         header("Location: /cars/show?id=" . $car_id);
+        exit;
     }
 }
