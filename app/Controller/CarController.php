@@ -62,4 +62,30 @@ class CarController extends Controller {
         $carModel->delete($_POST['id']);
         header('Location: /cars');
     }
+
+    private function handleImageUpload($file) {
+    if (!isset($file) || $file['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!in_array($file['type'], $allowedTypes)) {
+        throw new \Exception("Formato de imagen no permitido. Usa JPEG, PNG o WebP.");
+    }
+
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $filename = uniqid('car_', true) . '.' . $extension;
+    $uploadDir = __DIR__ . '/../../public/uploads/cars/';
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    $destination = $uploadDir . $filename;
+    if (move_uploaded_file($file['tmp_name'], $destination)) {
+        return 'uploads/cars/' . $filename;
+    }
+
+    return null;
+}
 }

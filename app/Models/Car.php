@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Core\DB;
+
 class Car extends Model {
     public function all(): array {
         return $this->db->query("SELECT * FROM cars ORDER BY id DESC")->fetchAll();
@@ -27,4 +29,16 @@ class Car extends Model {
         $stmt = $this->db->prepare("DELETE FROM cars WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
+    public static function getAllFiltered($search = null) {
+    $db = DB::getConnection();
+    if ($search) {
+        $stmt = $db->prepare("SELECT * FROM cars WHERE brand LIKE ? OR model LIKE ? OR plate LIKE ? ORDER BY id DESC");
+        $searchTerm = "%{$search}%";
+        $stmt->execute([$searchTerm, $searchTerm, $searchTerm]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    $stmt = $db->query("SELECT * FROM cars ORDER BY id DESC");
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+}
 }

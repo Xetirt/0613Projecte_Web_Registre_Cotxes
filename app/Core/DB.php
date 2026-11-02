@@ -2,33 +2,27 @@
 
 namespace App\Core;
 
-use PDO;
-use PDOException;
-
 class DB {
-    private static ?PDO $instance = null;
+    private static ?\PDO $connection = null;
 
-    public static function getInstance(): PDO {
-        if (self::$instance === null) {
-            $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
-            $db   = $_ENV['DB_NAME'] ?? 'registre_cotxes';
-            $user = $_ENV['DB_USER'] ?? 'xavi';
-            $pass = $_ENV['DB_PASS'] ?? 'x';
-            $charset = 'utf8mb4';
-
-            $dsn = "mysql:host={$host};dbname={$db};charset={$charset}";
+    public static function getConnection() {
+        if (self::$connection === null) {
+            // Ajusta los datos según tu entorno (config.php o variables de entorno)
+            $host = '127.0.0.1';
+            $dbname = 'nom_de_la_teva_bd'; // Cambia por tu base de datos
+            $username = 'root';
+            $password = '';
 
             try {
-                self::$instance = new PDO($dsn, $user, $pass, [
-                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES   => false,
+                self::$connection = new \PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, [
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
                 ]);
-            } catch (PDOException $e) {
-                die("Error de connexió a la base de dades: " . $e->getMessage());
+            } catch (\PDOException $e) {
+                die("Error de conexión a la Base de Datos: " . $e->getMessage());
             }
         }
 
-        return self::$instance;
+        return self::$connection;
     }
 }
