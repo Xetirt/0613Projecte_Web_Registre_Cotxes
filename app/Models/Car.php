@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Models;
 
 class Car extends Model {
-    public function all() {
+    public function all(): array {
         return $this->db->query("SELECT * FROM cars ORDER BY id DESC")->fetchAll();
     }
 
@@ -12,17 +13,17 @@ class Car extends Model {
         return $stmt->fetch();
     }
 
-    public function create($marca, $model, $photo, $year) {
+    public function create(string $marca, string $model, string $photo, int $year): bool {
         $stmt = $this->db->prepare("INSERT INTO cars (marca, model, photo, year) VALUES (?, ?, ?, ?)");
         return $stmt->execute([$marca, $model, $photo, $year]);
     }
 
-    public function update($id, $marca, $model, $photo, $year) {
+    public function update($id, string $marca, string $model, string $photo, int $year): bool {
         $stmt = $this->db->prepare("UPDATE cars SET marca = ?, model = ?, photo = ?, year = ? WHERE id = ?");
         return $stmt->execute([$marca, $model, $photo, $year, $id]);
     }
 
-    public function delete($id) {
+    public function delete($id): bool {
         $stmt = $this->db->prepare("DELETE FROM cars WHERE id = ?");
         return $stmt->execute([$id]);
     }
