@@ -11,7 +11,7 @@ class DB {
     public static function getInstance(): PDO {
         if (self::$instance === null) {
             try {
-                $host = 'localhost'; // <--- Cambiado de 127.0.0.1 a localhost
+                $host = 'localhost';
                 $db = 'registre_cotxes';
                 $user = 'xavi';
                 $pass = 'x';
@@ -24,7 +24,6 @@ class DB {
                 die("Error de conexión a la Base de Datos: " . $e->getMessage());
             }
         }
-
         return self::$instance;
     }
 }

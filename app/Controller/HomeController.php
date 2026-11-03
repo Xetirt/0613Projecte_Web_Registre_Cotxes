@@ -1,25 +1,25 @@
 <?php
+
 namespace App\Controller;
-use App\Core\DB;
-use PDOException;
+
 use App\Models\User;
 
-class HomeController{
-    function contact(){
-        return view('contact',['title'=>'Contact']);
+class HomeController extends Controller {
+
+    public function contact() {
+        return $this->view('pages.contact', [
+            'title' => 'Contacto'
+        ]);
     }
 
-    function index() {
-    $user = new User;
-    try {
-        $res = $user->create("Carlitos", "1234");
-    } catch (PDOException $e) {
-        die($e->getMessage());
-    }
+    public function index() {
+        // Obtenemos los datos de un usuario (o null si no hay sesión/usuario)
+        $userModel = new User();
+        $user = $userModel->findByEmail('xavi@gmail.com'); // O busca el usuario que prefieras mostrar
 
-    return view('home', [
-        'title' => 'Página Principal',
-        'user' => $res
-    ]);
-}
+        return $this->view('pages.home', [
+            'title' => 'Página Principal',
+            'user'  => $user
+        ]);
+    }
 }

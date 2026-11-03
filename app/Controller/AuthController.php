@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Controller;
 
 use App\Models\User;
 use App\Core\Session;
 
 class AuthController extends Controller {
+
     public function showLogin() {
         return $this->view('auth/login');
     }
@@ -15,15 +17,24 @@ class AuthController extends Controller {
 
     public function register() {
         $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $userModel = new User();
 
-        if (!empty($email) && !empty($password)) {
-            $userModel = new User();
-            $userModel->create($email, $password);
+        // 1. Comprobar si existe el email mediante la instancia $userModel
+        if ($userModel->findByEmail($email)) {
+            die("El usuario o email '{$email}' ya está registrado.");
+        }
+
+        try {
+            // 2. Crear usuario usando la instancia
+            $userModel->create($_POST);
             header('Location: /login');
             exit;
+        } catch (\PDOException $e) {
+            if ($e->getCode() == 23000) {
+                die("Error: El correo electrónico ya está en uso.");
+            }
+            die("Error al registrar usuario: " . $e->getMessage());
         }
-        header('Location: /register');
     }
 
     public function login() {
@@ -36,15 +47,10 @@ class AuthController extends Controller {
         if ($user && password_verify($password, $user['password'])) {
             Session::set('user_id', $user['id']);
             Session::set('user_email', $user['email']);
-            header('Location: /cars');
+            header('Location: /');
             exit;
         }
 
-        header('Location: /login');
-    }
-
-    public function logout() {
-        Session::destroy();
-        header('Location: /login');
+        die("Credenciales incorrectas.");
     }
 }

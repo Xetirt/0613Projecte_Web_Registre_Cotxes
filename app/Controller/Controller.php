@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
-class Controller {
-    protected function view($viewName, $data = []) {
-    extract($data);
-    
-    // Añadir 'app/' antes de 'Views/' y permitir puntos para subcarpetas (ej: 'pages.home')
-    $viewPath = __DIR__ . '/../Views/' . str_replace('.', '/', $viewName) . '.view.php';
+abstract class Controller {
+    protected function view(string $viewName, array $data = []) {
+        // Extrae las claves del array como variables ($title, $user, etc.)
+        extract($data);
 
-    if (file_exists($viewPath)) {
-        require_once $viewPath;
-    } else {
-        die("La vista [{$viewName}] no existe en la ruta: {$viewPath}");
+        $path = str_replace('.', '/', $viewName);
+        $viewPath = __DIR__ . '/../Views/' . $path . '.view.php';
+
+        if (file_exists($viewPath)) {
+            require $viewPath;
+        } else {
+            die("La vista [{$viewName}] no existe en la ruta: {$viewPath}");
+        }
     }
-}
 }
