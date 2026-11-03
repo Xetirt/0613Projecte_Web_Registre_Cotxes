@@ -31,7 +31,7 @@ class Car extends Model {
     }
 
     public static function getAllFiltered($search = null) {
-    $db = DB::getConnection();
+    $db = DB::getInstance();
     if ($search) {
         $stmt = $db->prepare("SELECT * FROM cars WHERE brand LIKE ? OR model LIKE ? OR plate LIKE ? ORDER BY id DESC");
         $searchTerm = "%{$search}%";
