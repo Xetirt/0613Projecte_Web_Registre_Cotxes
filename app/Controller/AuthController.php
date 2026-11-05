@@ -15,6 +15,12 @@ class AuthController extends Controller {
         return $this->view('auth/register');
     }
 
+    public function logout() {
+    Session::destroy();
+    header('Location: /');
+    exit;
+}
+
     public function register() {
         $email = $_POST['email'] ?? '';
         $userModel = new User();

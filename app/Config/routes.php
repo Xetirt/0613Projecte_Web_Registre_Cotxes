@@ -60,26 +60,26 @@ return [
         'handler' => [CarController::class, 'destroy']
     ],
 
-    // --- Módulo de Autenticación (Auth) ---
+    // --- Módulo de Autenticación (Auth) Corregido ---
     [
         'path' => '/login',
         'method' => 'GET',
-        'handler' => [AuthController::class, 'login']
+        'handler' => [AuthController::class, 'showLogin'] // Muestra el formulario
     ],
     [
         'path' => '/login',
         'method' => 'POST',
-        'handler' => [AuthController::class, 'authenticate']
+        'handler' => [AuthController::class, 'login']     // Procesa el inicio de sesión
     ],
     [
         'path' => '/register',
         'method' => 'GET',
-        'handler' => [AuthController::class, 'register']
+        'handler' => [AuthController::class, 'showRegister'] // Muestra el formulario
     ],
     [
         'path' => '/register',
         'method' => 'POST',
-        'handler' => [AuthController::class, 'store']
+        'handler' => [AuthController::class, 'register']   // Procesa el registro
     ],
     [
         'path' => '/logout',
