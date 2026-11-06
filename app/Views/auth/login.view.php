@@ -3,7 +3,7 @@
 
 <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
     <h2 class="text-2xl font-bold mb-4 text-center">Iniciar Sessió</h2>
-    <form action="/login/process" method="POST" class="space-y-4">
+    <form action="/login" method="POST" class="space-y-4">
         <div>
             <label class="block text-sm font-medium">Email</label>
             <input type="email" name="email" required class="w-full border p-2 rounded">

@@ -86,4 +86,6 @@ return [
         'method' => 'GET',
         'handler' => [AuthController::class, 'logout']
     ]
+    
 ];
+
