@@ -14,10 +14,10 @@ class CarController extends Controller {
     }
 
     public function index() {
-        $carModel = new Car();
-        $cars = $carModel->all();
-        return $this->view('cars/index', ['cars' => $cars]);
-    }
+    $carModel = new Car();
+    $cars = $carModel->all();
+    return view('cars/index', ['cars' => $cars]);
+}
 
     public function show() {
         $id = $_GET['id'] ?? null;
@@ -37,9 +37,11 @@ class CarController extends Controller {
 
     public function store() {
         $this->checkAuth();
+        dd($_POST); 
         $carModel = new Car();
         $carModel->create($_POST['marca'], $_POST['model'], $_POST['photo'], $_POST['year']);
         header('Location: /cars');
+        exit();
     }
 
     public function edit() {
@@ -54,6 +56,7 @@ class CarController extends Controller {
         $carModel = new Car();
         $carModel->update($_POST['id'], $_POST['marca'], $_POST['model'], $_POST['photo'], $_POST['year']);
         header('Location: /cars');
+        exit();
     }
 
     public function delete() {
@@ -61,6 +64,7 @@ class CarController extends Controller {
         $carModel = new Car();
         $carModel->delete($_POST['id']);
         header('Location: /cars');
+        exit();
     }
 
     private function handleImageUpload($file) {
