@@ -3,14 +3,13 @@
 use App\Controller\HomeController;
 use App\Controller\CarController;
 use App\Controller\AuthController;
-use App\Controller\ComentController;
 
 return [
-    // --- Páginas Principales / Estáticas ---
+    // --- Pantalla Principal (Muestra el Listado de Coches directamente) ---
     [
         'path' => '/',
         'method' => 'GET',
-        'handler' => [HomeController::class, 'index']
+        'handler' => [CarController::class, 'index']
     ],
     [
         'path' => '/about',
@@ -57,35 +56,33 @@ return [
     [
         'path' => '/cars/delete',
         'method' => 'POST',
-        'handler' => [CarController::class, 'destroy']
+        'handler' => [CarController::class, 'delete']
     ],
 
-    // --- Módulo de Autenticación (Auth) Corregido ---
+    // --- Módulo de Autenticación (Auth) ---
     [
         'path' => '/login',
         'method' => 'GET',
-        'handler' => [AuthController::class, 'showLogin'] // Muestra el formulario
+        'handler' => [AuthController::class, 'showLogin']
     ],
     [
         'path' => '/login',
         'method' => 'POST',
-        'handler' => [AuthController::class, 'login']     // Procesa el inicio de sesión
+        'handler' => [AuthController::class, 'login']
     ],
     [
         'path' => '/register',
         'method' => 'GET',
-        'handler' => [AuthController::class, 'showRegister'] // Muestra el formulario
+        'handler' => [AuthController::class, 'showRegister']
     ],
     [
         'path' => '/register',
         'method' => 'POST',
-        'handler' => [AuthController::class, 'register']   // Procesa el registro
+        'handler' => [AuthController::class, 'register']
     ],
     [
         'path' => '/logout',
         'method' => 'GET',
         'handler' => [AuthController::class, 'logout']
     ]
-    
 ];
-

@@ -39,13 +39,12 @@ class CarController extends Controller {
         $this->checkAuth();
         
         $carModel = new Car();
-        // Recogemos los datos del formulario de forma segura
         $marca = $_POST['marca'] ?? '';
         $model = $_POST['model'] ?? '';
         $photo = $_POST['photo'] ?? '';
-        $year = $_POST['year'] ?? date('Y');
+        $year = (int)($_POST['year'] ?? date('Y'));
 
-        $carModel->create($marca, $model, $photo, (int)$year);
+        $carModel->create($marca, $model, $photo, $year);
         
         header('Location: /cars');
         exit();
@@ -54,7 +53,7 @@ class CarController extends Controller {
     public function edit() {
         $this->checkAuth();
         $carModel = new Car();
-        $car = $carModel->find($_GET['id']);
+        $car = $carModel->find($_GET['id'] ?? null);
         return $this->view('cars/edit', ['car' => $car]);
     }
 
@@ -69,7 +68,7 @@ class CarController extends Controller {
     public function delete() {
         $this->checkAuth();
         $carModel = new Car();
-        $carModel->delete($_POST['id']);
+        $carModel->delete($_POST['id'] ?? null);
         header('Location: /cars');
         exit();
     }

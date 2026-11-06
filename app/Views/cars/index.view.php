@@ -1,56 +1,90 @@
 <?php require __DIR__ . '/../pages/partials/header.view.php'; ?>
+<?php require __DIR__ . '/../pages/partials/nav.view.php'; ?>
 
-<div class="max-w-5xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">Llistat de Cotxes</h1>
-        <?php if (\App\Core\Session::get('user_id')): ?>
-            <a href="/cars/create" class="bg-green-600 text-white px-4 py-2 rounded">Afegir Cotxe</a>
-        <?php endif; ?>
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Encabezado & Buscador -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Catálogo de Vehículos</h1>
+            <p class="text-sm text-slate-500 mt-1">Explora, añade y gestiona los coches registrados en la plataforma.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <form action="/cars" method="GET" class="flex gap-2 w-full md:w-auto">
+                <input type="text" name="search" placeholder="Buscar por marca o modelo..." 
+                       value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                       class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-sm w-64">
+                <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-medium text-sm rounded-lg shadow-sm transition">
+                    Buscar
+                </button>
+            </form>
+
+            <?php if (\App\Core\Session::get('user_id')): ?>
+                <a href="/cars/create" class="hidden sm:flex px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-lg shadow-sm transition items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Añadir
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <!-- Barra de Búsqueda y Filtros -->
-    <div class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-        <form action="/cars" method="GET" class="w-full md:w-1/2 flex gap-2">
-            <input type="text" name="search" placeholder="Buscar por marca o modelo..." 
-                   value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-            <button type="submit" class="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition">
-                Buscar
-            </button>
-        </form>
-        
-        <?php if (\App\Core\Session::get('user_id')): ?>
-            <a href="/cars/create" class="px-5 py-2 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-2z" clip-rule="evenodd" />
-                </svg>
-                Registrar Coche
-            </a>
-        <?php endif; ?>
-    </div>
-
-    <!-- Listado de Coches -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php if (!empty($cars)): ?>
+    <!-- Grid de Vehículos -->
+    <?php if (!empty($cars)): ?>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php foreach ($cars as $car): ?>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-                    <?php if (!empty($car['photo'])): ?>
-                        <img src="<?= htmlspecialchars($car['photo']) ?>" alt="Foto de <?= htmlspecialchars($car['marca']) ?>" class="w-full h-48 object-cover">
-                    <?php endif; ?>
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h2 class="text-xl font-semibold text-gray-800"><?= htmlspecialchars($car['marca']) ?> <?= htmlspecialchars($car['model']) ?></h2>
-                        <p class="text-gray-600 text-sm mt-1">Año: <?= htmlspecialchars($car['year']) ?></p>
-                        
-                        <div class="mt-auto pt-4 flex justify-between items-center">
-                            <a href="/cars/show?id=<?= $car['id'] ?>" class="text-blue-600 hover:underline text-sm font-medium">Ver detalles</a>
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col">
+                    <!-- Imagen del coche -->
+                    <div class="relative h-48 bg-slate-100 overflow-hidden">
+                        <?php if (!empty($car['photo'])): ?>
+                            <img src="<?= htmlspecialchars($car['photo']) ?>" alt="<?= htmlspecialchars($car['marca']) ?>" class="w-full h-full object-cover">
+                        <?php else: ?>
+                            <div class="w-full h-full flex items-center justify-center text-slate-400 font-medium">Sin Imagen</div>
+                        <?php endif; ?>
+                        <span class="absolute top-3 right-3 bg-slate-900/80 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                            <?= htmlspecialchars($car['year']) ?>
+                        </span>
+                    </div>
+
+                    <!-- Datos del coche -->
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h2 class="text-xl font-bold text-slate-900">
+                            <?= htmlspecialchars($car['marca']) ?> 
+                            <span class="font-normal text-slate-600"><?= htmlspecialchars($car['model']) ?></span>
+                        </h2>
+
+                        <!-- Botones de Acción -->
+                        <div class="mt-auto pt-5 flex items-center justify-between border-t border-slate-100 gap-2">
+                            <a href="/cars/show?id=<?= $car['id'] ?>" class="text-indigo-600 hover:text-indigo-800 text-sm font-semibold transition flex items-center gap-1">
+                                Ver detalle &rarr;
+                            </a>
+
+                            <?php if (\App\Core\Session::get('user_id')): ?>
+                                <div class="flex items-center gap-1.5">
+                                    <a href="/cars/edit?id=<?= $car['id'] ?>" class="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 rounded-md text-xs font-semibold transition">
+                                        Editar
+                                    </a>
+                                    <form action="/cars/delete" method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar este coche?');">
+                                        <input type="hidden" name="id" value="<?= $car['id'] ?>">
+                                        <button type="submit" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 rounded-md text-xs font-semibold transition">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-span-full text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
-                <p class="text-gray-500 text-lg">No hay coches registrados todavía.</p>
-            </div>
-        <?php endif; ?>
-    </div>
-</div>
+        </div>
+    <?php else: ?>
+        <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center max-w-lg mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-slate-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <h3 class="text-lg font-semibold text-slate-800">No hay coches registrados</h3>
+            <p class="text-sm text-slate-500 mt-1">Intenta realizar otra búsqueda o registra un nuevo coche.</p>
+        </div>
+    <?php endif; ?>
+</main>
