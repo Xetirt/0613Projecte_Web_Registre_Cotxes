@@ -14,10 +14,10 @@ class CarController extends Controller {
     }
 
     public function index() {
-    $carModel = new Car();
-    $cars = $carModel->all();
-    return view('cars/index', ['cars' => $cars]);
-}
+        $search = $_GET['search'] ?? null;
+        $cars = Car::getAllFiltered($search);
+        return $this->view('cars/index', ['cars' => $cars]);
+    }
 
     public function show() {
         $id = $_GET['id'] ?? null;
@@ -37,9 +37,16 @@ class CarController extends Controller {
 
     public function store() {
         $this->checkAuth();
-        dd($_POST); 
+        
         $carModel = new Car();
-        $carModel->create($_POST['marca'], $_POST['model'], $_POST['photo'], $_POST['year']);
+        // Recogemos los datos del formulario de forma segura
+        $marca = $_POST['marca'] ?? '';
+        $model = $_POST['model'] ?? '';
+        $photo = $_POST['photo'] ?? '';
+        $year = $_POST['year'] ?? date('Y');
+
+        $carModel->create($marca, $model, $photo, (int)$year);
+        
         header('Location: /cars');
         exit();
     }
@@ -54,7 +61,7 @@ class CarController extends Controller {
     public function update() {
         $this->checkAuth();
         $carModel = new Car();
-        $carModel->update($_POST['id'], $_POST['marca'], $_POST['model'], $_POST['photo'], $_POST['year']);
+        $carModel->update($_POST['id'], $_POST['marca'], $_POST['model'], $_POST['photo'], (int)$_POST['year']);
         header('Location: /cars');
         exit();
     }
@@ -66,30 +73,4 @@ class CarController extends Controller {
         header('Location: /cars');
         exit();
     }
-
-    private function handleImageUpload($file) {
-    if (!isset($file) || $file['error'] !== UPLOAD_ERR_OK) {
-        return null;
-    }
-
-    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (!in_array($file['type'], $allowedTypes)) {
-        throw new \Exception("Formato de imagen no permitido. Usa JPEG, PNG o WebP.");
-    }
-
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $filename = uniqid('car_', true) . '.' . $extension;
-    $uploadDir = __DIR__ . '/../../public/uploads/cars/';
-
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
-
-    $destination = $uploadDir . $filename;
-    if (move_uploaded_file($file['tmp_name'], $destination)) {
-        return 'uploads/cars/' . $filename;
-    }
-
-    return null;
-}
 }

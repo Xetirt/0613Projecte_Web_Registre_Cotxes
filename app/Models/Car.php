@@ -31,14 +31,14 @@ class Car extends Model {
     }
 
     public static function getAllFiltered($search = null) {
-    $db = DB::getInstance();
-    if ($search) {
-        $stmt = $db->prepare("SELECT * FROM cars WHERE brand LIKE ? OR model LIKE ? OR plate LIKE ? ORDER BY id DESC");
-        $searchTerm = "%{$search}%";
-        $stmt->execute([$searchTerm, $searchTerm, $searchTerm]);
+        $db = DB::getInstance();
+        if ($search) {
+            $stmt = $db->prepare("SELECT * FROM cars WHERE marca LIKE ? OR model LIKE ? ORDER BY id DESC");
+            $searchTerm = "%{$search}%";
+            $stmt->execute([$searchTerm, $searchTerm]);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+        $stmt = $db->query("SELECT * FROM cars ORDER BY id DESC");
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-    $stmt = $db->query("SELECT * FROM cars ORDER BY id DESC");
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-}
 }
