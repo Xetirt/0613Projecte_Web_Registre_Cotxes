@@ -6,13 +6,15 @@ use App\Core\DB;
 
 class Car extends Model {
     public function all(): array {
-        return $this->db->query("SELECT * FROM cars ORDER BY id DESC")->fetchAll();
+        $stmt = $this->db->prepare("SELECT * FROM cars ORDER BY id DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function find($id) {
+    public function find(int $id) {
         $stmt = $this->db->prepare("SELECT * FROM cars WHERE id = ?");
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function create(string $marca, string $model, string $photo, int $year): bool {
@@ -20,12 +22,12 @@ class Car extends Model {
         return $stmt->execute([$marca, $model, $photo, $year]);
     }
 
-    public function update($id, string $marca, string $model, string $photo, int $year): bool {
+    public function update(int $id, string $marca, string $model, string $photo, int $year): bool {
         $stmt = $this->db->prepare("UPDATE cars SET marca = ?, model = ?, photo = ?, year = ? WHERE id = ?");
         return $stmt->execute([$marca, $model, $photo, $year, $id]);
     }
 
-    public function delete($id): bool {
+    public function delete(int $id): bool {
         $stmt = $this->db->prepare("DELETE FROM cars WHERE id = ?");
         return $stmt->execute([$id]);
     }

@@ -10,7 +10,7 @@ include __DIR__ . '/../pages/partials/nav.view.php';
         <h1 class="text-3xl font-bold text-gray-800">Catálogo de Vehículos</h1>
         <?php if (Session::isAdmin()): ?>
             <a href="/cars/create" class="bg-emerald-600 text-white font-bold px-4 py-2 rounded hover:bg-emerald-700">
-                + Añadir Coche
+                + Nuevo Coche
             </a>
         <?php endif; ?>
     </div>
@@ -21,10 +21,12 @@ include __DIR__ . '/../pages/partials/nav.view.php';
                 <div class="bg-white rounded-lg shadow border p-4 flex flex-col justify-between">
                     <div>
                         <img src="<?= htmlspecialchars($car['photo'] ?? '/uploads/default.jpg') ?>" 
-                             alt="<?= htmlspecialchars($car['marca'] ?? '') ?>" 
+                             alt="<?= htmlspecialchars($car['marca'] ?? 'Coche') ?>" 
                              class="w-full h-48 object-cover rounded mb-4">
-                        <h2 class="text-xl font-bold"><?= htmlspecialchars($car['marca']) ?> <?= htmlspecialchars($car['model']) ?></h2>
-                        <p class="text-gray-600">Año: <?= htmlspecialchars($car['year']) ?></p>
+                        <h2 class="text-xl font-bold">
+                            <?= htmlspecialchars($car['marca'] ?? '') ?> <?= htmlspecialchars($car['model'] ?? '') ?>
+                        </h2>
+                        <p class="text-gray-600">Año: <?= htmlspecialchars((string)($car['year'] ?? '')) ?></p>
                     </div>
 
                     <div class="mt-4 flex gap-2 justify-between items-center">
