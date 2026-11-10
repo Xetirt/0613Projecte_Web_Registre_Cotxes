@@ -15,22 +15,23 @@ class CarController extends Controller {
     }
 
     public function show() {
-        $id = (int)($_GET['id'] ?? 0);
-        $carModel = new Car();
-        $car = $carModel->find($id);
+    $id = (int)($_GET['id'] ?? 0);
+    $carModel = new Car();
+    $car = $carModel->find($id);
 
-        if (!$car) {
-            die("El coche solicitado no existe.");
-        }
-
-        $commentModel = new Comment();
-        $comments = $commentModel->getByCarId($id);
-
-        return $this->view('cars.show', [
-            'car' => $car,
-            'comments' => $comments
-        ]);
+    if (!$car) {
+        header('Location: /cars');
+        exit;
     }
+
+    $commentModel = new Comment();
+    $comments = $commentModel->getByCarId($id);
+
+    return $this->view('cars.show', [
+        'car' => $car,
+        'comments' => $comments
+    ]);
+}
 
     public function create() {
         if (!Session::isAdmin()) {
