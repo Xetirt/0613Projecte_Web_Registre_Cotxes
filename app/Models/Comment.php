@@ -1,21 +1,28 @@
 <?php
+
 namespace App\Models;
 
+use PDO;
+
 class Comment extends Model {
-    public function getByCarId($car_id) {
+
+    public function getByCarId(int $carId): array {
         $stmt = $this->db->prepare("
-            SELECT comments.*, users.email 
+            SELECT comments.*, users.name AS author_name 
             FROM comments 
             JOIN users ON comments.user_id = users.id 
-            WHERE car_id = ? 
-            ORDER BY comments.id DESC
+            WHERE comments.car_id = ? 
+            ORDER BY comments.created_at DESC
         ");
-        $stmt->execute([$car_id]);
-        return $stmt->fetchAll();
+        $stmt->execute([$carId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create($description, $car_id, $user_id) {
-        $stmt = $this->db->prepare("INSERT INTO comments (description, car_id, user_id) VALUES (?, ?, ?)");
-        return $stmt->execute([$description, $car_id, $user_id]);
+    public function create(int $carId, int $userId, string $content): bool {
+        $stmt = $this->db->prepare("
+            INSERT INTO comments (car_id, user_id, content) 
+            VALUES (?, ?, ?)
+        ");
+        return $stmt->execute([$carId, $userId, trim($content)]);
     }
 }

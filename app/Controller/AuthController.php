@@ -50,12 +50,16 @@ class AuthController extends Controller {
         $userModel = new User();
         $user = $userModel->findByEmail($email);
 
-        if ($user && password_verify($password, $user['password'])) {
-            Session::set('user_id', $user['id']);
-            Session::set('user_email', $user['email']);
-            header('Location: /');
-            exit;
-        }
+        // Dentro del método login() en AuthController.php:
+if ($user && password_verify($password, $user['password'])) {
+    Session::set('user_id', $user['id']);
+    Session::set('user_name', $user['name'] ?? $user['email']);
+    Session::set('user_email', $user['email']);
+    Session::set('user_role', $user['role'] ?? 'user'); // Guardamos el rol
+
+    header('Location: /');
+    exit;
+}
 
         die("Credenciales incorrectas.");
     }

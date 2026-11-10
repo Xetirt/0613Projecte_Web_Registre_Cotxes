@@ -3,6 +3,7 @@
 use App\Controller\HomeController;
 use App\Controller\CarController;
 use App\Controller\AuthController;
+use App\Controller\CommentController;
 
 return [
     // --- Pantalla Principal (Muestra el Listado de Coches directamente) ---
@@ -84,5 +85,15 @@ return [
         'path' => '/logout',
         'method' => 'GET',
         'handler' => [AuthController::class, 'logout']
+    ],
+    [
+    'path' => '/cars/show',
+    'method' => 'GET',
+    'handler' => [CarController::class, 'show']
+    ],
+    [
+    'path' => '/comments/store',
+    'method' => 'POST',
+    'handler' => [CommentController::class, 'store']
     ]
 ];
