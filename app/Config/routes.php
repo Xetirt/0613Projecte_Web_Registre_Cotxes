@@ -22,13 +22,6 @@ return [
         'method' => 'GET',
         'handler' => [HomeController::class, 'contact']
     ],
-
-    // --- Módulo de Vehículos (Cars) ---
-    [
-        'path' => '/cars',
-        'method' => 'GET',
-        'handler' => [CarController::class, 'index']
-    ],
     [
         'path' => '/cars/create',
         'method' => 'GET',
@@ -95,5 +88,10 @@ return [
     'path' => '/comments/store',
     'method' => 'POST',
     'handler' => [CommentController::class, 'store']
+    ], 
+    [
+        'path' => '/cars/delete',
+        'method' => 'POST',
+        'handler' => [CarController::class, 'destroy']
     ]
 ];
