@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Core\DB;
+use PDO;
 
 class Car extends Model {
+
     public function all(): array {
         $stmt = $this->db->prepare("SELECT * FROM cars ORDER BY id DESC");
         $stmt->execute();
@@ -30,17 +31,5 @@ class Car extends Model {
     public function delete(int $id): bool {
         $stmt = $this->db->prepare("DELETE FROM cars WHERE id = ?");
         return $stmt->execute([$id]);
-    }
-
-    public static function getAllFiltered($search = null) {
-        $db = DB::getInstance();
-        if ($search) {
-            $stmt = $db->prepare("SELECT * FROM cars WHERE marca LIKE ? OR model LIKE ? ORDER BY id DESC");
-            $searchTerm = "%{$search}%";
-            $stmt->execute([$searchTerm, $searchTerm]);
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        }
-        $stmt = $db->query("SELECT * FROM cars ORDER BY id DESC");
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
