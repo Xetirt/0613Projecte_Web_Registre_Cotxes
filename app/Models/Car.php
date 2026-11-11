@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use App\Core\DB;
 
 class Car extends Model {
 

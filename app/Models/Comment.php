@@ -19,10 +19,7 @@ class Comment extends Model {
     }
 
     public function create(int $carId, int $userId, string $content): bool {
-        $stmt = $this->db->prepare("
-            INSERT INTO comments (car_id, user_id, content) 
-            VALUES (?, ?, ?)
-        ");
+        $stmt = $this->db->prepare("INSERT INTO comments (car_id, user_id, content) VALUES (?, ?, ?)");
         return $stmt->execute([$carId, $userId, trim($content)]);
     }
 }

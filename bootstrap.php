@@ -1,7 +1,11 @@
 <?php
 
+// 1. Cargar el autoloader de Composer al principio
+require_once __DIR__ . '/vendor/autoload.php';
+
 use App\Core\Session;
 
+// 2. Iniciar la sesión
 Session::start();
 
 // Carga sencilla del archivo .env si existe
