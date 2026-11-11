@@ -55,7 +55,7 @@ if ($user && password_verify($password, $user['password'])) {
     Session::set('user_id', $user['id']);
     Session::set('user_name', $user['name'] ?? $user['email']);
     Session::set('user_email', $user['email']);
-    Session::set('user_role', $user['role'] ?? 'user'); // Guardamos el rol
+    Session::set('user_role', $user['role'] ?? 'user'); // Guardar rol
 
     header('Location: /');
     exit;
