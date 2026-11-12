@@ -19,14 +19,14 @@ class Car extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create(string $marca, string $model, string $photo, int $year): bool {
-        $stmt = $this->db->prepare("INSERT INTO cars (marca, model, photo, year) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$marca, $model, $photo, $year]);
+    public function create(string $marca, string $model, string $photo, int $year, string $description = ''): bool {
+        $stmt = $this->db->prepare("INSERT INTO cars (marca, model, photo, year, description) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$marca, $model, $photo, $year, trim($description)]);
     }
 
-    public function update(int $id, string $marca, string $model, string $photo, int $year): bool {
-        $stmt = $this->db->prepare("UPDATE cars SET marca = ?, model = ?, photo = ?, year = ? WHERE id = ?");
-        return $stmt->execute([$marca, $model, $photo, $year, $id]);
+    public function update(int $id, string $marca, string $model, string $photo, int $year, string $description = ''): bool {
+        $stmt = $this->db->prepare("UPDATE cars SET marca = ?, model = ?, photo = ?, year = ?, description = ? WHERE id = ?");
+        return $stmt->execute([$marca, $model, $photo, $year, trim($description), $id]);
     }
 
     public function delete(int $id): bool {

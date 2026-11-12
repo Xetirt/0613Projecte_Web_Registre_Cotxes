@@ -59,10 +59,11 @@ class CarController extends Controller {
             $_POST['marca'] ?? '',
             $_POST['model'] ?? '',
             $_POST['photo'] ?? '',
-            (int)($_POST['year'] ?? date('Y'))
+            (int)($_POST['year'] ?? date('Y')),
+            $_POST['description'] ?? ''
         );
 
-        header('Location: /cars');
+        header('Location: /');
         exit;
     }
 
@@ -96,7 +97,8 @@ class CarController extends Controller {
             $_POST['marca'] ?? '',
             $_POST['model'] ?? '',
             $_POST['photo'] ?? '',
-            (int)($_POST['year'] ?? date('Y'))
+            (int)($_POST['year'] ?? date('Y')),
+            $_POST['description'] ?? ''
         );
 
         header('Location: /cars/show?id=' . $id);

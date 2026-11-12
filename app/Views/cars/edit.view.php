@@ -2,7 +2,7 @@
 <?php include __DIR__ . '/../pages/partials/nav.view.php'; ?>
 
 <main class="container mx-auto mt-6 p-4 max-w-xl">
-    <a href="/cars" class="text-blue-600 hover:underline">&larr; Volver al catálogo</a>
+    <a href="/" class="text-blue-600 hover:underline">&larr; Volver al inicio</a>
 
     <div class="mt-4 bg-white shadow rounded-lg p-6">
         <h1 class="text-2xl font-bold mb-4">Editar Vehículo</h1>
@@ -33,6 +33,12 @@
                     <label class="block text-gray-700 font-semibold mb-1">URL de la Imagen</label>
                     <input type="text" name="photo" value="<?= htmlspecialchars($car['photo'] ?? '') ?>" 
                            class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-1">Descripción</label>
+                    <textarea name="description" rows="4" placeholder="Escribe las características o detalles del vehículo..." 
+                              class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"><?= htmlspecialchars($car['description'] ?? '') ?></textarea>
                 </div>
 
                 <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700">

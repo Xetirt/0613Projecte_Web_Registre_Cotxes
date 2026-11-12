@@ -23,6 +23,13 @@ include __DIR__ . '/../pages/partials/nav.view.php';
                     Año: <strong><?= htmlspecialchars((string)($car['year'] ?? '')) ?></strong>
                 </p>
 
+                <div class="mt-4 border-t pt-4">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Descripción</h3>
+                    <p class="text-gray-700 mt-1 leading-relaxed">
+                        <?= !empty($car['description']) ? nl2br(htmlspecialchars($car['description'])) : '<span class="italic text-gray-400">Sin descripción disponible.</span>' ?>
+                    </p>
+                </div>
+
                 <?php if (Session::isAdmin()): ?>
                     <div class="mt-6 flex gap-3">
                         <a href="/cars/edit?id=<?= $car['id'] ?>" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
