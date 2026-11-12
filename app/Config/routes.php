@@ -75,9 +75,9 @@ return [
         'handler' => [AuthController::class, 'register']
     ],
     [
-        'path' => '/logout',
+        'path' => '/cars/show',
         'method' => 'GET',
-        'handler' => [AuthController::class, 'logout']
+        'handler' => [CarController::class, 'show']
     ],
     [
     'path' => '/cars/show',
@@ -93,5 +93,10 @@ return [
         'path' => '/cars/delete',
         'method' => 'POST',
         'handler' => [CarController::class, 'destroy']
+    ],[
+
+        'path' => '/logout',
+        'method' => 'GET',
+        'handler' => [AuthController::class, 'logout']
     ]
 ];

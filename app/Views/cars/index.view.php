@@ -30,7 +30,7 @@ include __DIR__ . '/../pages/partials/nav.view.php';
                     </div>
 
                     <div class="mt-4 flex gap-2 justify-between items-center">
-                        <a href="/cars/show?id=<?= $car['id'] ?>" class="text-blue-600 font-semibold hover:underline">
+                        <a href="/cars/show?id=<?= htmlspecialchars((string)$car['id']) ?>" class="text-blue-600 font-semibold hover:underline">
                             Ver detalles &rarr;
                         </a>
                         <?php if (Session::isAdmin()): ?>

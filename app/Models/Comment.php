@@ -12,7 +12,7 @@ class Comment extends Model {
             FROM comments 
             JOIN users ON comments.user_id = users.id 
             WHERE comments.car_id = ? 
-            ORDER BY comments.created_at DESC
+            ORDER BY comments.id DESC
         ");
         $stmt->execute([$carId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

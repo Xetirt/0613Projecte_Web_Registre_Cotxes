@@ -6,7 +6,7 @@ include __DIR__ . '/../pages/partials/nav.view.php';
 ?>
 
 <main class="container mx-auto mt-6 p-4">
-    <a href="/cars" class="text-blue-600 hover:underline">&larr; Volver al catálogo</a>
+    <a href="/" class="text-blue-600 hover:underline">&larr; Volver al inicio</a>
 
     <?php if (!empty($car) && is_array($car)): ?>
         <div class="mt-4 bg-white shadow rounded-lg p-6 flex flex-col md:flex-row gap-6">
@@ -16,8 +16,12 @@ include __DIR__ . '/../pages/partials/nav.view.php';
                      class="w-full h-64 object-cover rounded-lg">
             </div>
             <div class="md:w-1/2">
-                <h1 class="text-3xl font-bold"><?= htmlspecialchars($car['marca'] ?? '') ?> <?= htmlspecialchars($car['model'] ?? '') ?></h1>
-                <p class="text-gray-600 text-lg mt-2">Año: <strong><?= htmlspecialchars($car['year'] ?? '') ?></strong></p>
+                <h1 class="text-3xl font-bold">
+                    <?= htmlspecialchars($car['marca'] ?? '') ?> <?= htmlspecialchars($car['model'] ?? '') ?>
+                </h1>
+                <p class="text-gray-600 text-lg mt-2">
+                    Año: <strong><?= htmlspecialchars((string)($car['year'] ?? '')) ?></strong>
+                </p>
 
                 <?php if (Session::isAdmin()): ?>
                     <div class="mt-6 flex gap-3">
@@ -31,7 +35,7 @@ include __DIR__ . '/../pages/partials/nav.view.php';
             </div>
         </div>
 
-        <!-- Sección de Comentarios Multiusuario -->
+        <!-- Sección de Comentarios -->
         <section class="mt-8 bg-gray-50 rounded-lg p-6">
             <h2 class="text-2xl font-bold mb-4">Comentarios</h2>
 
@@ -40,7 +44,9 @@ include __DIR__ . '/../pages/partials/nav.view.php';
                     <input type="hidden" name="car_id" value="<?= $car['id'] ?>">
                     <textarea name="content" rows="3" required placeholder="Escribe tu comentario sobre este vehículo..." 
                               class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    <button type="submit" class="mt-2 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">Publicar Comentario</button>
+                    <button type="submit" class="mt-2 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">
+                        Publicar Comentario
+                    </button>
                 </form>
             <?php else: ?>
                 <p class="text-gray-600 mb-4"><a href="/login" class="text-blue-600 underline">Inicia sesión</a> para dejar un comentario.</p>
@@ -62,10 +68,6 @@ include __DIR__ . '/../pages/partials/nav.view.php';
                 <?php endif; ?>
             </div>
         </section>
-    <?php else: ?>
-        <div class="mt-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            <p>No se ha encontrado la información del coche solicitado.</p>
-        </div>
     <?php endif; ?>
 </main>
 

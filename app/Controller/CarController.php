@@ -19,11 +19,17 @@ class CarController extends Controller {
 
     public function show() {
         $id = (int)($_GET['id'] ?? 0);
+
+        if ($id <= 0) {
+            header('Location: /');
+            exit;
+        }
+
         $carModel = new Car();
         $car = $carModel->find($id);
 
         if (!$car) {
-            header('Location: /cars');
+            header('Location: /');
             exit;
         }
 
@@ -106,7 +112,7 @@ class CarController extends Controller {
         $carModel = new Car();
         $carModel->delete($id);
 
-        header('Location: /cars');
+        header('Location: /');
         exit;
     }
 }

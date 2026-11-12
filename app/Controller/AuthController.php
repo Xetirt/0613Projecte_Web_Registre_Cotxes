@@ -16,10 +16,10 @@ class AuthController extends Controller {
     }
 
     public function logout() {
-    Session::destroy();
-    header('Location: /');
-    exit;
-}
+        Session::destroy();
+        header('Location: /');
+        exit;
+    }
 
     public function register() {
         $email = $_POST['email'] ?? '';
